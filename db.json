@@ -2,8 +2,9 @@
   "todos": [
     {
       "title": "json-server 데이터1",
-      "completed": false,
-      "id": 1
+      "completed": true,
+      "id": 1,
+      "liked": false
     },
     {
       "title": "json-server 데이터2",
