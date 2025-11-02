@@ -45,7 +45,7 @@ export const deleteTodo = async (id) => {
 };
 
 // 할 일 완료 상태 토글
-export const toggleTodoStatus = async (id, currentCompleted) => {
+export const toggleTodoStatus = async ({ id, currentCompleted }) => {
   const response = await fetch(`${API_URL}/${id}`, {
     method: "PATCH",
     headers: {
@@ -59,5 +59,6 @@ export const toggleTodoStatus = async (id, currentCompleted) => {
   if (!response.ok) {
     throw new Error("할 일 상태를 변경하는데 실패했습니다.");
   }
+
   return await response.json();
 };

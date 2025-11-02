@@ -1,9 +1,21 @@
+"use client";
+
 import Link from "next/link";
 
-export default function TodoItem({ todo }) {
+export default function TodoItem({ todo, onToggle = null }) {
   return (
     <div className="flex items-center justify-between p-4 border-b">
-      <div className="flex items-center">
+      <div className="flex items-center gap-2">
+        {onToggle && (
+          <input
+            type="checkbox"
+            checked={todo.completed}
+            onChange={() =>
+              onToggle({ id: todo.id, currentCompleted: todo.completed })
+            }
+            className="w-4 h-4 cursor-pointer"
+          />
+        )}
         <span
           style={{ textDecoration: todo.completed ? "line-through" : "none" }}
         >
