@@ -17,15 +17,36 @@ export default function Header() {
           <ul className="flex space-x-4 justify-center">
             <li>
               <Link
-                href="/"
+                href="/pagination"
                 className={`px-3 py-2 rounded hover:bg-blue-600 ${isActive(
-                  "/",
+                  "/pagination",
                 )}`}
               >
-                홈
+                페이지네이션
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                href="/load-more"
+                className={`px-3 py-2 rounded hover:bg-blue-600 ${isActive(
+                  "/load-more",
+                )}`}
+              >
+                더보기
               </Link>
             </li>
             <li>
+              <Link
+                href="/infinite-scroll"
+                className={`px-3 py-2 rounded hover:bg-blue-600 ${isActive(
+                  "/infinite-scroll",
+                )}`}
+              >
+                무한스크롤
+              </Link>
+            </li>
+            {/* <li>
               <Link
                 href="/completed"
                 className={`px-3 py-2 rounded hover:bg-blue-600 ${isActive(
@@ -44,7 +65,7 @@ export default function Header() {
               >
                 enabled 테스트
               </Link>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </div>
