@@ -3,30 +3,19 @@
 import { useEffect, useState } from "react";
 import TodoList from "./_components/TodoList";
 import { fetchTodos } from "@/lib/services/todos";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Home() {
-  const [todos, setTodos] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const {
+    data: todos,
+    isPending,
+    error,
+  } = useQuery({
+    queryKey: ["todos"],
+    queryFn: fetchTodos,
+  });
 
-  const loadTodos = async () => {
-    try {
-      const todos = await fetchTodos();
-      setTodos(todos);
-    } catch (err) {
-      setError(err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    setTimeout(() => {
-      loadTodos();
-    }, 0);
-  }, []);
-
-  if (isLoading) {
+  if (isPending) {
     return (
       <div className="container mx-auto px-4 py-8 text-center">로딩 중...</div>
     );
