@@ -1,14 +1,6 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function TodoItem({ todo }) {
-  const router = useRouter();
-
-  const handleViewDetail = () => {
-    router.push(`/${todo.id}`);
-  };
-
   return (
     <div className="flex items-center justify-between p-4 border-b">
       <div className="flex items-center">
@@ -18,12 +10,11 @@ export default function TodoItem({ todo }) {
           {todo.title}
         </span>
       </div>
-      <button
-        // onClick={handleViewDetail}
-        className="px-2 py-1 bg-blue-500 text-white rounded cursor-pointer"
-      >
-        상세보기
-      </button>
+      <Link href={`/${todo.id}`}>
+        <button className="px-2 py-1 bg-blue-500 text-white rounded cursor-pointer">
+          상세보기
+        </button>
+      </Link>
     </div>
   );
 }
