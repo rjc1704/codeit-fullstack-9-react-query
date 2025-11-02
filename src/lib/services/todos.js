@@ -13,9 +13,7 @@ export const fetchTodos = async () => {
 // 할 일 상세 조회
 export const fetchTodo = async (id) => {
   const response = await fetch(`${API_URL}/${id}`);
-  if (!response.ok) {
-    throw new Error("할 일을 찾을 수 없습니다.");
-  }
+  if (!response.ok) throw new Error("할 일을 찾을 수 없습니다.");
   return await response.json();
 };
 // 할 일 추가
@@ -32,10 +30,8 @@ export const addTodo = async (title) => {
     },
     body: JSON.stringify(newTodo),
   });
-
-  if (!response.ok) {
-    throw new Error("할 일을 추가하는데 실패했습니다.");
-  }
+  if (!response.ok) throw new Error("할 일을 추가하는데 실패했습니다.");
+  return await response.json();
 };
 
 // 할 일 삭제
@@ -44,10 +40,7 @@ export const deleteTodo = async (id) => {
     method: "DELETE",
   });
 
-  if (!response.ok) {
-    throw new Error("할 일을 삭제하는데 실패했습니다.");
-  }
-
+  if (!response.ok) throw new Error("할 일을 삭제하는데 실패했습니다.");
   return true;
 };
 
@@ -66,6 +59,5 @@ export const toggleTodoStatus = async (id, currentCompleted) => {
   if (!response.ok) {
     throw new Error("할 일 상태를 변경하는데 실패했습니다.");
   }
-
   return await response.json();
 };
