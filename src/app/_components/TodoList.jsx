@@ -7,8 +7,10 @@ import {
   toggleTodoLike,
 } from "@/lib/services/todos";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 export default function TodoList() {
+  const [currentPage, setCurrentPage] = useState(1);
   const {
     data: todos,
     isPending,
@@ -26,7 +28,9 @@ export default function TodoList() {
   const toggleMutation = useMutation({
     mutationFn: toggleTodoStatus,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["todos"] });
+      await queryClient.invalidateQueries({
+        queryKey: ["todos", "page", currentPage],
+      });
     },
   });
 
@@ -36,17 +40,27 @@ export default function TodoList() {
     onMutate: async (newTodo) => {
       // Cancel any outgoing refetches
       // (so they don't overwrite our optimistic update)
-      await queryClient.cancelQueries({ queryKey: ["todos"] });
+      await queryClient.cancelQueries({
+        queryKey: ["todos", "page", currentPage],
+      });
 
       // Snapshot the previous value
-      const previousTodos = queryClient.getQueryData(["todos"]);
+      const previousTodos = queryClient.getQueryData([
+        "todos",
+        "page",
+        currentPage,
+      ]);
 
       // Optimistically update to the new value
-      queryClient.setQueryData(["todos"], (old) =>
-        old.map((todo) =>
-          todo.id === newTodo.id ? { ...todo, liked: !todo.liked } : todo,
-        ),
-      );
+      queryClient.setQueryData(["todos", "page", currentPage], (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          todos: old.todos.map((todo) =>
+            todo.id === newTodo.id ? { ...todo, liked: !todo.liked } : todo,
+          ),
+        };
+      });
 
       // Return a context object with the snapshotted value
       return { previousTodos };
@@ -62,6 +76,10 @@ export default function TodoList() {
     },
   });
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   if (isPending)
     return (
       <div className="container mx-auto px-4 py-8 text-center">로딩 중...</div>
@@ -73,20 +91,31 @@ export default function TodoList() {
         {error}
       </div>
     );
+
+  // const { todos, totalPages } = todosData;
+
   return (
-    <div className="border">
-      {todos.length === 0 ? (
-        <div className="p-4 text-center">할 일이 없습니다.</div>
-      ) : (
-        todos.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            onToggle={toggleMutation.mutate}
-            onLikeToggle={toggleLikeMutation.mutate}
-          />
-        ))
-      )}
+    <div>
+      <div className="border">
+        {todos.length === 0 ? (
+          <div className="p-4 text-center">할 일이 없습니다.</div>
+        ) : (
+          todos.map((todo) => (
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              onToggle={toggleMutation.mutate}
+              onLikeToggle={toggleLikeMutation.mutate}
+            />
+          ))
+        )}
+      </div>
+      {/* 페이지네이션 UI */}
+      {/* <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      /> */}
     </div>
   );
 }

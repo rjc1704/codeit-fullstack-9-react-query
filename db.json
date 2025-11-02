@@ -2,13 +2,13 @@
   "todos": [
     {
       "title": "json-server 데이터1",
-      "completed": true,
+      "completed": false,
       "liked": false,
       "id": 1
     },
     {
       "title": "json-server 데이터2",
-      "completed": false,
+      "completed": true,
       "liked": true,
       "id": 2
     },
