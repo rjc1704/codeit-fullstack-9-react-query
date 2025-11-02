@@ -16,6 +16,7 @@ export default function TodoDetailPage() {
   } = useQuery({
     queryKey: ["todo", id],
     queryFn: () => fetchTodo(id),
+    gcTime: 10 * 60 * 1000,
   });
 
   if (isPending) {
