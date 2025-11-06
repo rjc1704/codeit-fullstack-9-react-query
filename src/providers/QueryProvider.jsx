@@ -12,7 +12,7 @@ function makeQueryClient() {
   const queryCache = new QueryCache();
 
   return new QueryClient({
-    // queryCache,
+    queryCache,
     defaultOptions: {
       queries: {
         staleTime: 10 * 1000,
