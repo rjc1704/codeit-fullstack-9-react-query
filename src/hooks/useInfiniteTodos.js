@@ -5,10 +5,7 @@ export default function useInfiniteTodos() {
   return useInfiniteQuery({
     queryKey: ["todos", "infinite"],
     queryFn: fetchInfiniteTodos,
-    getNextPageParam: (lastPage) => (lastPage, allPages, lastPageParam) => {
-      const nextPage = lastPageParam + 1;
-      return nextPage <= lastPage.totalPages ? nextPage : undefined;
-    },
+    getNextPageParam: (lastPage) => lastPage.nextPage,
     initialPageParam: 1,
     select: (data) => data.pages.flatMap((page) => page.todos),
   });
