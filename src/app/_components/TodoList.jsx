@@ -1,8 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import TodoItem from "@/app/_components/TodoItem";
-import { fetchTodos } from "@/lib/services/todos";
 
 export default function TodoList({ todos }) {
   return (
